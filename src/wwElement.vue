@@ -521,7 +521,7 @@ export default {
   row-gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
-  min-height: calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 40px);
+  min-height: calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 96px);
   overflow: hidden;
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
@@ -567,6 +567,8 @@ export default {
   align-items: center;
   justify-content: center;
   min-height: var(--applications-live-map-min-height);
+  padding-bottom: 18px;
+  box-sizing: border-box;
   overflow: visible;
 }
 
@@ -712,6 +714,8 @@ export default {
 
 .applications-feed-list {
   min-height: 100%;
+  padding-bottom: 34px;
+  box-sizing: border-box;
 }
 
 .application-row {
