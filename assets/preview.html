@@ -26,7 +26,7 @@
 
       #app {
         width: min(100%, 1320px);
-        height: min(500px, calc(100vh - 64px));
+        height: min(820px, calc(100vh - 64px));
         padding: 42px;
         background: #ffffff;
         border-radius: 24px;
@@ -71,20 +71,19 @@
                 Vue.h(componentDefinition.content, {
                   content: {
                     applications,
-                    liveWindowHours: 48,
+                    liveWindowHours: 12,
                     minRevealDelay: 1000,
                     maxRevealDelay: 3000,
                     replayRecentOnLoad: true,
                     backgroundColor: '#ffffff',
-                    componentHeight: 500,
-                    titleText: 'Bewerbungen der letzten 48 Stunden',
+                    titleText: 'Bewerbungen nach Regionen',
                     titleColor: '#050505',
                     titleFontFamily: 'inherit',
-                    titleFontSize: 17,
-                    titleFontWeight: 700,
+                    titleFontSize: 32,
+                    titleFontWeight: 800,
                     titleLineHeight: 1.08,
                     titleLetterSpacing: 0,
-                    headerBottomSpacing: 18,
+                    headerGap: 24,
                     liveIndicatorText: 'Live',
                     liveIndicatorDotColor: '#22c55e',
                     liveIndicatorTextColor: '#050505',
@@ -104,10 +103,10 @@
                     highlightDuration: 1200,
                     sidePadding: 18,
                     highlightRadius: 10,
-                    rowPaddingY: 11,
-                    positionFontSize: 16,
-                    companyFontSize: 15,
-                    timeFontSize: 12
+                    rowPaddingY: 14,
+                    positionFontSize: 21,
+                    companyFontSize: 19,
+                    timeFontSize: 17
                   }
                 })
               ])

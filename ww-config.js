@@ -93,7 +93,7 @@ export default {
       label: { en: 'Live window hours' },
       type: 'Number',
       bindable: true,
-      defaultValue: 48,
+      defaultValue: 12,
       options: { min: 0, max: 168, step: 1 }
     },
     minRevealDelay: {
@@ -121,18 +121,11 @@ export default {
       bindable: true,
       defaultValue: '#ffffff'
     },
-    componentHeight: {
-      label: { en: 'Component height' },
-      type: 'Number',
-      bindable: true,
-      defaultValue: 500,
-      options: { min: 260, max: 1200, step: 10 }
-    },
     titleText: {
       label: { en: 'Title text' },
       type: 'Text',
       bindable: true,
-      defaultValue: 'Bewerbungen der letzten 48 Stunden'
+      defaultValue: 'Bewerbungen nach Regionen'
     },
     titleColor: {
       label: { en: 'Title color' },
@@ -150,14 +143,14 @@ export default {
       label: { en: 'Title font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 17,
+      defaultValue: 32,
       options: { min: 10, max: 72, step: 1 }
     },
     titleFontWeight: {
       label: { en: 'Title font weight' },
       type: 'Number',
       bindable: true,
-      defaultValue: 700,
+      defaultValue: 800,
       options: { min: 100, max: 1000, step: 100 }
     },
     titleLineHeight: {
@@ -174,7 +167,7 @@ export default {
       defaultValue: 0,
       options: { min: -2, max: 8, step: 0.1 }
     },
-    headerBottomSpacing: {
+    headerGap: {
       label: { en: 'Header bottom spacing' },
       type: 'Number',
       bindable: true,
@@ -333,28 +326,28 @@ export default {
       label: { en: 'Row vertical padding' },
       type: 'Number',
       bindable: true,
-      defaultValue: 11,
+      defaultValue: 14,
       options: { min: 4, max: 48, step: 1 }
     },
     positionFontSize: {
       label: { en: 'Position font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 16,
+      defaultValue: 21,
       options: { min: 12, max: 48, step: 1 }
     },
     companyFontSize: {
       label: { en: 'Company font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 15,
+      defaultValue: 19,
       options: { min: 12, max: 40, step: 1 }
     },
     timeFontSize: {
       label: { en: 'Time font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 12,
+      defaultValue: 17,
       options: { min: 10, max: 34, step: 1 }
     }
   }

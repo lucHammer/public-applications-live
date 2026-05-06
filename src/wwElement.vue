@@ -242,14 +242,14 @@ export default {
     const impactIds = ref(new Set());
     const timers = [];
 
-    const liveWindowHours = computed(() => Math.max(0, numberOrFallback(content.value.liveWindowHours, 48)));
+    const liveWindowHours = computed(() => Math.max(0, numberOrFallback(content.value.liveWindowHours, 12)));
     const minRevealDelay = computed(() => Math.max(0, numberOrFallback(content.value.minRevealDelay, 1000)));
     const maxRevealDelay = computed(() => Math.max(minRevealDelay.value, numberOrFallback(content.value.maxRevealDelay, 3000)));
     const replayRecentOnLoad = computed(() => content.value.replayRecentOnLoad !== false);
     const highlightDuration = computed(() => Math.max(300, numberOrFallback(content.value.highlightDuration, 1200)));
     const impactDuration = computed(() => Math.max(500, numberOrFallback(content.value.impactDuration, 1700)));
     const liveIndicatorText = computed(() => content.value.liveIndicatorText || 'Live');
-    const titleText = computed(() => content.value.titleText ?? 'Bewerbungen der letzten 48 Stunden');
+    const titleText = computed(() => content.value.titleText ?? 'Bewerbungen nach Regionen');
 
     const clusterRadius = computed(() => numberOrFallback(content.value.clusterRadius, 34));
     const minPointRadius = computed(() => numberOrFallback(content.value.minPointRadius, 5));
@@ -352,20 +352,16 @@ export default {
 
     const rootStyle = computed(() => ({
       '--applications-live-background': content.value.backgroundColor || '#ffffff',
-      '--applications-live-component-height': `${numberOrFallback(content.value.componentHeight, 500)}px`,
       '--applications-live-gap': `${numberOrFallback(content.value.layoutGap, 28)}px`,
-      '--applications-live-header-gap': `${numberOrFallback(
-        content.value.headerBottomSpacing ?? content.value.headerGap,
-        24
-      )}px`,
+      '--applications-live-header-gap': `${numberOrFallback(content.value.headerGap, 24)}px`,
       '--applications-live-map-min-height': `${numberOrFallback(content.value.mapMinHeight, 420)}px`,
       '--applications-live-map-fill': content.value.mapFillColor || '#e7e7e7',
       '--applications-live-outline': content.value.outlineColor || '#111111',
       '--applications-live-region-line': content.value.regionLineColor || '#6f6f6f',
       '--applications-live-hotspot': content.value.hotspotColor || '#2563ff',
       '--applications-live-title-color': content.value.titleColor || '#050505',
-      '--applications-live-title-size': `${numberOrFallback(content.value.titleFontSize, 17)}px`,
-      '--applications-live-title-weight': numberOrFallback(content.value.titleFontWeight, 700),
+      '--applications-live-title-size': `${numberOrFallback(content.value.titleFontSize, 32)}px`,
+      '--applications-live-title-weight': numberOrFallback(content.value.titleFontWeight, 800),
       '--applications-live-title-line-height': numberOrFallback(content.value.titleLineHeight, 1.08),
       '--applications-live-title-letter-spacing': `${numberOrFallback(content.value.titleLetterSpacing, 0)}px`,
       '--applications-live-title-font-family': content.value.titleFontFamily || 'inherit',
@@ -379,10 +375,10 @@ export default {
       '--applications-feed-divider': content.value.dividerColor || '#e9e9e9',
       '--applications-feed-side-padding': `${numberOrFallback(content.value.sidePadding, 18)}px`,
       '--applications-feed-highlight-radius': `${numberOrFallback(content.value.highlightRadius, 10)}px`,
-      '--applications-feed-row-padding-y': `${numberOrFallback(content.value.rowPaddingY, 11)}px`,
-      '--applications-feed-position-size': `${numberOrFallback(content.value.positionFontSize, 16)}px`,
-      '--applications-feed-company-size': `${numberOrFallback(content.value.companyFontSize, 15)}px`,
-      '--applications-feed-time-size': `${numberOrFallback(content.value.timeFontSize, 12)}px`
+      '--applications-feed-row-padding-y': `${numberOrFallback(content.value.rowPaddingY, 14)}px`,
+      '--applications-feed-position-size': `${numberOrFallback(content.value.positionFontSize, 24)}px`,
+      '--applications-feed-company-size': `${numberOrFallback(content.value.companyFontSize, 22)}px`,
+      '--applications-feed-time-size': `${numberOrFallback(content.value.timeFontSize, 20)}px`
     }));
 
     const isEditing = computed(() => {
@@ -525,8 +521,7 @@ export default {
   row-gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
-  min-height: min(100%, var(--applications-live-component-height));
-  max-height: var(--applications-live-component-height);
+  min-height: calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 40px);
   overflow: hidden;
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
@@ -557,8 +552,8 @@ export default {
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: var(--applications-live-gap);
   width: 100%;
-  min-height: 0;
-  overflow: hidden;
+  height: 100%;
+  min-height: var(--applications-live-map-min-height);
 }
 
 .applications-live-map,
@@ -571,10 +566,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  min-height: 0;
-  padding-bottom: 14px;
-  box-sizing: border-box;
+  min-height: var(--applications-live-map-min-height);
   overflow: visible;
 }
 
@@ -582,7 +574,7 @@ export default {
   display: block;
   width: min(100%, 640px);
   height: 100%;
-  min-height: 0;
+  min-height: 280px;
   max-height: 100%;
   overflow: visible;
 }
@@ -919,15 +911,14 @@ export default {
 @media (max-width: 560px) {
   .applications-live-layout {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 0.48fr) minmax(0, 0.52fr);
   }
 
   .applications-live-map {
-    min-height: 0;
+    min-height: min(var(--applications-live-map-min-height), 440px);
   }
 
   .applications-live-feed-panel {
-    min-height: 0;
+    min-height: 320px;
   }
 }
 
