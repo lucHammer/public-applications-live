@@ -519,9 +519,9 @@ export default {
 
 <style lang="scss" scoped>
 .ww-applications-live {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  row-gap: var(--applications-live-header-gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -533,6 +533,7 @@ export default {
 }
 
 .applications-live-header {
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
@@ -552,10 +553,12 @@ export default {
 }
 
 .applications-live-layout {
+  flex: 1 1 0;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: var(--applications-live-gap);
   width: 100%;
+  height: auto;
   min-height: 0;
   max-height: 100%;
   overflow: hidden;
@@ -565,6 +568,7 @@ export default {
 .applications-live-feed-panel {
   min-width: 0;
   min-height: 0;
+  height: 100%;
 }
 
 .applications-live-map {
