@@ -121,6 +121,13 @@ export default {
       bindable: true,
       defaultValue: '#ffffff'
     },
+    componentHeight: {
+      label: { en: 'Component height' },
+      type: 'Number',
+      bindable: true,
+      defaultValue: 500,
+      options: { min: 260, max: 1200, step: 10 }
+    },
     titleText: {
       label: { en: 'Title text' },
       type: 'Text',

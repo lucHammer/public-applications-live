@@ -352,6 +352,7 @@ export default {
 
     const rootStyle = computed(() => ({
       '--applications-live-background': content.value.backgroundColor || '#ffffff',
+      '--applications-live-component-height': `${numberOrFallback(content.value.componentHeight, 500)}px`,
       '--applications-live-gap': `${numberOrFallback(content.value.layoutGap, 28)}px`,
       '--applications-live-header-gap': `${numberOrFallback(
         content.value.headerBottomSpacing ?? content.value.headerGap,
@@ -519,13 +520,13 @@ export default {
 
 <style lang="scss" scoped>
 .ww-applications-live {
-  display: flex;
-  flex-direction: column;
-  gap: var(--applications-live-header-gap);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  row-gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
-  min-height: 0;
-  max-height: 100%;
+  min-height: min(100%, var(--applications-live-component-height));
+  max-height: var(--applications-live-component-height);
   overflow: hidden;
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
@@ -533,7 +534,6 @@ export default {
 }
 
 .applications-live-header {
-  flex: 0 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
@@ -553,14 +553,11 @@ export default {
 }
 
 .applications-live-layout {
-  flex: 1 1 0;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: var(--applications-live-gap);
   width: 100%;
-  height: auto;
   min-height: 0;
-  max-height: 100%;
   overflow: hidden;
 }
 
@@ -568,28 +565,26 @@ export default {
 .applications-live-feed-panel {
   min-width: 0;
   min-height: 0;
-  height: 100%;
 }
 
 .applications-live-map {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   min-height: 0;
-  max-height: 100%;
-  overflow: hidden;
+  padding-bottom: 14px;
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .applications-live-map-svg {
   display: block;
-  position: absolute;
-  inset: 0;
-  width: 100%;
+  width: min(100%, 640px);
   height: 100%;
-  min-width: 0;
   min-height: 0;
-  max-width: 100%;
   max-height: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .applications-live-map-outline,
@@ -685,7 +680,6 @@ export default {
 .applications-live-feed-panel {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
-  overflow: hidden;
 }
 
 .applications-live-status {
@@ -719,7 +713,6 @@ export default {
 }
 
 .applications-live-feed {
-  height: 100%;
   min-height: 0;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
