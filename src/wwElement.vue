@@ -556,7 +556,9 @@ export default {
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: var(--applications-live-gap);
   width: 100%;
+  height: 100%;
   min-height: 0;
+  max-height: 100%;
   overflow: hidden;
 }
 
@@ -567,21 +569,24 @@ export default {
 }
 
 .applications-live-map {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   height: 100%;
   min-height: 0;
-  overflow: visible;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .applications-live-map-svg {
   display: block;
-  width: min(100%, 640px);
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
+  min-width: 0;
   min-height: 0;
+  max-width: 100%;
   max-height: 100%;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .applications-live-map-outline,
@@ -677,6 +682,7 @@ export default {
 .applications-live-feed-panel {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .applications-live-status {
@@ -710,6 +716,7 @@ export default {
 }
 
 .applications-live-feed {
+  height: 100%;
   min-height: 0;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
