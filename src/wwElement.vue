@@ -1,123 +1,125 @@
 <template>
   <div class="ww-applications-live" :style="rootStyle">
-    <div class="applications-live-map" aria-label="Deutschlandkarte mit Live-Bewerbungen">
-      <svg
-        class="applications-live-map-svg"
-        :viewBox="germanyMap.viewBox"
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label="Deutschlandkarte mit Bewerbungs-Hotspots"
-      >
-        <defs>
-          <filter id="applications-live-hotspot-glow" x="-220%" y="-220%" width="540%" height="540%">
-            <feGaussianBlur stdDeviation="5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+    <div class="applications-live-layout">
+      <div class="applications-live-map" aria-label="Deutschlandkarte mit Live-Bewerbungen">
+        <svg
+          class="applications-live-map-svg"
+          :viewBox="germanyMap.viewBox"
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          aria-label="Deutschlandkarte mit Bewerbungs-Hotspots"
+        >
+          <defs>
+            <filter id="applications-live-hotspot-glow" x="-220%" y="-220%" width="540%" height="540%">
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-        <g class="applications-live-map-outline" aria-hidden="true">
-          <path
-            v-for="location in germanyMap.locations"
-            :key="`outline-${location.id}`"
-            :d="location.path"
-            class="applications-live-map-outline-path"
-          />
-        </g>
-
-        <g class="applications-live-map-regions">
-          <path
-            v-for="location in germanyMap.locations"
-            :key="location.id"
-            :d="location.path"
-            class="applications-live-map-region"
-          />
-        </g>
-
-        <g class="applications-live-map-hotspots">
-          <g
-            v-for="hotspot in hotspots"
-            :key="hotspot.id"
-            class="applications-live-map-hotspot"
-            :class="{ fresh: hotspot.isFresh }"
-            :transform="`translate(${hotspot.x} ${hotspot.y})`"
-            :tabindex="isEditing ? -1 : 0"
-            :role="isEditing ? 'presentation' : 'button'"
-            @click="emitHotspotClick(hotspot)"
-            @keydown.enter.prevent="emitHotspotClick(hotspot)"
-            @keydown.space.prevent="emitHotspotClick(hotspot)"
-          >
-            <title>{{ hotspot.tooltip }}</title>
-            <circle
-              class="applications-live-map-hotspot-glow"
-              :r="hotspot.glowRadius"
-              :fill="hotspot.color"
-              :opacity="hotspot.glowOpacity"
-            />
-            <circle
-              class="applications-live-map-hotspot-ambient-pulse"
-              :r="hotspot.ambientPulseRadius"
-              :stroke="hotspot.color"
-              :style="{ animationDelay: hotspot.pulseDelay }"
-            />
-            <circle
-              class="applications-live-map-hotspot-halo"
-              :r="hotspot.haloRadius"
-              :stroke="hotspot.color"
-              :opacity="hotspot.haloOpacity"
-            />
-            <circle
-              class="applications-live-map-hotspot-core"
-              :r="hotspot.coreRadius"
-              :fill="hotspot.color"
-              :stroke="hotspot.strokeColor"
-            />
-            <circle
-              class="applications-live-map-hotspot-light"
-              :r="Math.max(2, hotspot.coreRadius * 0.34)"
-            />
-            <circle
-              v-if="hotspot.isFresh"
-              class="applications-live-map-hotspot-impact-ring hotspot-impact-ring-one"
-              :r="hotspot.impactRadius"
-              :stroke="hotspot.color"
-            />
-            <circle
-              v-if="hotspot.isFresh"
-              class="applications-live-map-hotspot-impact-ring hotspot-impact-ring-two"
-              :r="hotspot.impactRadius"
-              :stroke="hotspot.color"
+          <g class="applications-live-map-outline" aria-hidden="true">
+            <path
+              v-for="location in germanyMap.locations"
+              :key="`outline-${location.id}`"
+              :d="location.path"
+              class="applications-live-map-outline-path"
             />
           </g>
-        </g>
-      </svg>
-    </div>
 
-    <div class="applications-live-feed-panel">
-      <div class="applications-live-status" aria-label="Live-Status">
-        <span class="applications-live-status-dot" aria-hidden="true"></span>
-        <span class="applications-live-status-text">{{ liveIndicatorText }}</span>
+          <g class="applications-live-map-regions">
+            <path
+              v-for="location in germanyMap.locations"
+              :key="location.id"
+              :d="location.path"
+              class="applications-live-map-region"
+            />
+          </g>
+
+          <g class="applications-live-map-hotspots">
+            <g
+              v-for="hotspot in hotspots"
+              :key="hotspot.id"
+              class="applications-live-map-hotspot"
+              :class="{ fresh: hotspot.isFresh }"
+              :transform="`translate(${hotspot.x} ${hotspot.y})`"
+              :tabindex="isEditing ? -1 : 0"
+              :role="isEditing ? 'presentation' : 'button'"
+              @click="emitHotspotClick(hotspot)"
+              @keydown.enter.prevent="emitHotspotClick(hotspot)"
+              @keydown.space.prevent="emitHotspotClick(hotspot)"
+            >
+              <title>{{ hotspot.tooltip }}</title>
+              <circle
+                class="applications-live-map-hotspot-glow"
+                :r="hotspot.glowRadius"
+                :fill="hotspot.color"
+                :opacity="hotspot.glowOpacity"
+              />
+              <circle
+                class="applications-live-map-hotspot-ambient-pulse"
+                :r="hotspot.ambientPulseRadius"
+                :stroke="hotspot.color"
+                :style="{ animationDelay: hotspot.pulseDelay }"
+              />
+              <circle
+                class="applications-live-map-hotspot-halo"
+                :r="hotspot.haloRadius"
+                :stroke="hotspot.color"
+                :opacity="hotspot.haloOpacity"
+              />
+              <circle
+                class="applications-live-map-hotspot-core"
+                :r="hotspot.coreRadius"
+                :fill="hotspot.color"
+                :stroke="hotspot.strokeColor"
+              />
+              <circle
+                class="applications-live-map-hotspot-light"
+                :r="Math.max(2, hotspot.coreRadius * 0.34)"
+              />
+              <circle
+                v-if="hotspot.isFresh"
+                class="applications-live-map-hotspot-impact-ring hotspot-impact-ring-one"
+                :r="hotspot.impactRadius"
+                :stroke="hotspot.color"
+              />
+              <circle
+                v-if="hotspot.isFresh"
+                class="applications-live-map-hotspot-impact-ring hotspot-impact-ring-two"
+                :r="hotspot.impactRadius"
+                :stroke="hotspot.color"
+              />
+            </g>
+          </g>
+        </svg>
       </div>
 
-      <div class="applications-live-feed">
-        <TransitionGroup name="application-row" tag="div" class="applications-feed-list">
-          <article
-            v-for="application in visibleApplications"
-            :key="application.id"
-            class="application-row"
-            :class="{ fresh: application.isFresh }"
-          >
-            <div class="application-copy">
-              <div class="application-position">{{ application.title }}</div>
-              <div class="application-company">{{ application.company }}</div>
-            </div>
-            <time class="application-time" :datetime="application.isoDate">
-              {{ application.relativeTime }}
-            </time>
-          </article>
-        </TransitionGroup>
+      <div class="applications-live-feed-panel">
+        <div class="applications-live-status" aria-label="Live-Status">
+          <span class="applications-live-status-dot" aria-hidden="true"></span>
+          <span class="applications-live-status-text">{{ liveIndicatorText }}</span>
+        </div>
+
+        <div class="applications-live-feed">
+          <TransitionGroup name="application-row" tag="div" class="applications-feed-list">
+            <article
+              v-for="application in visibleApplications"
+              :key="application.id"
+              class="application-row"
+              :class="{ fresh: application.isFresh }"
+            >
+              <div class="application-copy">
+                <div class="application-position">{{ application.title }}</div>
+                <div class="application-company">{{ application.company }}</div>
+              </div>
+              <time class="application-time" :datetime="application.isoDate">
+                {{ application.relativeTime }}
+              </time>
+            </article>
+          </TransitionGroup>
+        </div>
       </div>
     </div>
   </div>
@@ -498,9 +500,6 @@ export default {
 
 <style lang="scss" scoped>
 .ww-applications-live {
-  display: grid;
-  grid-template-columns: minmax(320px, 0.92fr) minmax(420px, 1.08fr);
-  gap: var(--applications-live-gap);
   width: 100%;
   height: 100%;
   min-height: var(--applications-live-map-min-height);
@@ -508,6 +507,15 @@ export default {
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
   font-family: inherit;
+}
+
+.applications-live-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: var(--applications-live-gap);
+  width: 100%;
+  height: 100%;
+  min-height: var(--applications-live-map-min-height);
 }
 
 .applications-live-map,
@@ -856,8 +864,8 @@ export default {
   }
 }
 
-@media (max-width: 860px) {
-  .ww-applications-live {
+@media (max-width: 560px) {
+  .applications-live-layout {
     grid-template-columns: minmax(0, 1fr);
   }
 
