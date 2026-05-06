@@ -1,5 +1,13 @@
 <template>
   <div class="ww-applications-live" :style="rootStyle">
+    <div class="applications-live-header">
+      <div class="applications-live-title">{{ titleText }}</div>
+      <div class="applications-live-status" aria-label="Live-Status">
+        <span class="applications-live-status-dot" aria-hidden="true"></span>
+        <span class="applications-live-status-text">{{ liveIndicatorText }}</span>
+      </div>
+    </div>
+
     <div class="applications-live-layout">
       <div class="applications-live-map" aria-label="Deutschlandkarte mit Live-Bewerbungen">
         <svg
@@ -98,11 +106,6 @@
       </div>
 
       <div class="applications-live-feed-panel">
-        <div class="applications-live-status" aria-label="Live-Status">
-          <span class="applications-live-status-dot" aria-hidden="true"></span>
-          <span class="applications-live-status-text">{{ liveIndicatorText }}</span>
-        </div>
-
         <div class="applications-live-feed">
           <TransitionGroup name="application-row" tag="div" class="applications-feed-list">
             <article
@@ -246,6 +249,7 @@ export default {
     const highlightDuration = computed(() => Math.max(300, numberOrFallback(content.value.highlightDuration, 1200)));
     const impactDuration = computed(() => Math.max(500, numberOrFallback(content.value.impactDuration, 1700)));
     const liveIndicatorText = computed(() => content.value.liveIndicatorText || 'Live');
+    const titleText = computed(() => content.value.titleText ?? 'Bewerbungen nach Regionen');
 
     const clusterRadius = computed(() => numberOrFallback(content.value.clusterRadius, 34));
     const minPointRadius = computed(() => numberOrFallback(content.value.minPointRadius, 5));
@@ -349,11 +353,18 @@ export default {
     const rootStyle = computed(() => ({
       '--applications-live-background': content.value.backgroundColor || '#ffffff',
       '--applications-live-gap': `${numberOrFallback(content.value.layoutGap, 28)}px`,
+      '--applications-live-header-gap': `${numberOrFallback(content.value.headerGap, 24)}px`,
       '--applications-live-map-min-height': `${numberOrFallback(content.value.mapMinHeight, 420)}px`,
       '--applications-live-map-fill': content.value.mapFillColor || '#e7e7e7',
       '--applications-live-outline': content.value.outlineColor || '#111111',
       '--applications-live-region-line': content.value.regionLineColor || '#6f6f6f',
       '--applications-live-hotspot': content.value.hotspotColor || '#2563ff',
+      '--applications-live-title-color': content.value.titleColor || '#050505',
+      '--applications-live-title-size': `${numberOrFallback(content.value.titleFontSize, 32)}px`,
+      '--applications-live-title-weight': numberOrFallback(content.value.titleFontWeight, 800),
+      '--applications-live-title-line-height': numberOrFallback(content.value.titleLineHeight, 1.08),
+      '--applications-live-title-letter-spacing': `${numberOrFallback(content.value.titleLetterSpacing, 0)}px`,
+      '--applications-live-title-font-family': content.value.titleFontFamily || 'inherit',
       '--applications-live-dot': content.value.liveIndicatorDotColor || '#22c55e',
       '--applications-live-status-text': content.value.liveIndicatorTextColor || '#050505',
       '--applications-live-status-background': content.value.liveIndicatorBackgroundColor || '#ffffff',
@@ -494,6 +505,7 @@ export default {
       hotspots,
       visibleApplications,
       liveIndicatorText,
+      titleText,
       rootStyle,
       isEditing,
       emitHotspotClick
@@ -504,13 +516,35 @@ export default {
 
 <style lang="scss" scoped>
 .ww-applications-live {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  row-gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
-  min-height: var(--applications-live-map-min-height);
+  min-height: calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 40px);
   overflow: hidden;
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
   font-family: inherit;
+}
+
+.applications-live-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.applications-live-title {
+  min-width: 0;
+  color: var(--applications-live-title-color);
+  font-family: var(--applications-live-title-font-family);
+  font-size: var(--applications-live-title-size);
+  font-weight: var(--applications-live-title-weight);
+  line-height: var(--applications-live-title-line-height);
+  letter-spacing: var(--applications-live-title-letter-spacing);
 }
 
 .applications-live-layout {
@@ -637,8 +671,7 @@ export default {
 
 .applications-live-feed-panel {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 12px;
+  grid-template-rows: minmax(0, 1fr);
 }
 
 .applications-live-status {

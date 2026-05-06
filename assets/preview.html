@@ -33,15 +33,8 @@
         box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08);
       }
 
-      h1 {
-        margin: 0 0 24px;
-        color: #050505;
-        font-size: 32px;
-        line-height: 1.08;
-      }
-
       .preview-slot {
-        height: calc(100% - 62px);
+        height: 100%;
       }
     </style>
   </head>
@@ -74,7 +67,6 @@
         Vue.createApp({
           render() {
             return Vue.h('div', { style: { height: '100%' } }, [
-              Vue.h('h1', 'Bewerbungen nach Regionen'),
               Vue.h('div', { class: 'preview-slot' }, [
                 Vue.h(componentDefinition.content, {
                   content: {
@@ -84,6 +76,14 @@
                     maxRevealDelay: 3000,
                     replayRecentOnLoad: true,
                     backgroundColor: '#ffffff',
+                    titleText: 'Bewerbungen nach Regionen',
+                    titleColor: '#050505',
+                    titleFontFamily: 'inherit',
+                    titleFontSize: 32,
+                    titleFontWeight: 800,
+                    titleLineHeight: 1.08,
+                    titleLetterSpacing: 0,
+                    headerGap: 24,
                     liveIndicatorText: 'Live',
                     liveIndicatorDotColor: '#22c55e',
                     liveIndicatorTextColor: '#050505',

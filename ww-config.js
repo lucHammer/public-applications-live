@@ -121,6 +121,59 @@ export default {
       bindable: true,
       defaultValue: '#ffffff'
     },
+    titleText: {
+      label: { en: 'Title text' },
+      type: 'Text',
+      bindable: true,
+      defaultValue: 'Bewerbungen nach Regionen'
+    },
+    titleColor: {
+      label: { en: 'Title color' },
+      type: 'Color',
+      bindable: true,
+      defaultValue: '#050505'
+    },
+    titleFontFamily: {
+      label: { en: 'Title font family' },
+      type: 'Text',
+      bindable: true,
+      defaultValue: 'inherit'
+    },
+    titleFontSize: {
+      label: { en: 'Title font size' },
+      type: 'Number',
+      bindable: true,
+      defaultValue: 32,
+      options: { min: 10, max: 72, step: 1 }
+    },
+    titleFontWeight: {
+      label: { en: 'Title font weight' },
+      type: 'Number',
+      bindable: true,
+      defaultValue: 800,
+      options: { min: 100, max: 1000, step: 100 }
+    },
+    titleLineHeight: {
+      label: { en: 'Title line height' },
+      type: 'Number',
+      bindable: true,
+      defaultValue: 1.08,
+      options: { min: 0.8, max: 2, step: 0.01 }
+    },
+    titleLetterSpacing: {
+      label: { en: 'Title letter spacing' },
+      type: 'Number',
+      bindable: true,
+      defaultValue: 0,
+      options: { min: -2, max: 8, step: 0.1 }
+    },
+    headerGap: {
+      label: { en: 'Header bottom spacing' },
+      type: 'Number',
+      bindable: true,
+      defaultValue: 24,
+      options: { min: 0, max: 96, step: 1 }
+    },
     liveIndicatorText: {
       label: { en: 'Live indicator text' },
       type: 'Text',
