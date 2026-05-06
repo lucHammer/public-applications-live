@@ -521,7 +521,8 @@ export default {
   row-gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
-  min-height: calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 128px);
+  min-height: min(100%, calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 128px));
+  max-height: 100%;
   overflow: hidden;
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
@@ -553,7 +554,8 @@ export default {
   gap: var(--applications-live-gap);
   width: 100%;
   height: 100%;
-  min-height: var(--applications-live-map-min-height);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .applications-live-map,
@@ -566,7 +568,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: var(--applications-live-map-min-height);
+  height: 100%;
+  min-height: 0;
   padding-bottom: 32px;
   box-sizing: border-box;
   overflow: visible;
@@ -576,7 +579,7 @@ export default {
   display: block;
   width: min(100%, 640px);
   height: 100%;
-  min-height: 280px;
+  min-height: 0;
   max-height: 100%;
   overflow: visible;
 }
@@ -674,6 +677,8 @@ export default {
 .applications-live-feed-panel {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
 }
 
 .applications-live-status {
@@ -707,6 +712,7 @@ export default {
 }
 
 .applications-live-feed {
+  height: 100%;
   min-height: 0;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
