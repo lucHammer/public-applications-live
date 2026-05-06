@@ -1,0 +1,13 @@
+{
+  "name": "public-applications-live",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "weweb build",
+    "build:local": "weweb build -- name=public-applications-live type=wwobject",
+    "serve": "weweb serve"
+  },
+  "devDependencies": {
+    "@weweb/cli": "latest"
+  },
+  "dependencies": {}
+}

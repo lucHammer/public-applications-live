@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Public Applications Live Preview</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body,
+      #app {
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        padding: 32px;
+        background: #f4f6fb;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+      }
+
+      #app {
+        width: min(100%, 1320px);
+        height: min(820px, calc(100vh - 64px));
+        padding: 42px;
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08);
+      }
+
+      h1 {
+        margin: 0 0 24px;
+        color: #050505;
+        font-size: 32px;
+        line-height: 1.08;
+      }
+
+      .preview-slot {
+        height: calc(100% - 62px);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="../node_modules/vue/dist/vue.global.prod.js"></script>
+
+    <script>
+      const now = Date.now();
+      const hoursAgo = (hours) => now - hours * 60 * 60 * 1000;
+      const applications = [
+        { created_at: hoursAgo(0.05), lat: 49.44054, lng: 8.575782, position_name: 'Servicetechniker (m/w/d) - Heidelberg', company_name: 'United Rentals GmbH' },
+        { created_at: hoursAgo(0.18), lat: 52.45138, lng: 7.057214, position_name: 'Mitarbeiter in der Qualitaetssicherung (m/w/d)', company_name: 'Variotech GmbH' },
+        { created_at: hoursAgo(0.45), lat: 49.475273, lng: 8.663787, position_name: 'Vertriebsmitarbeiter (m/w/d)', company_name: 'Hammerjobs' },
+        { created_at: hoursAgo(1.1), lat: 52.004816, lng: 8.415139, position_name: 'Sales Manager (m/w/d)', company_name: 'Ambrosia FM Consulting & Services GmbH' },
+        { created_at: hoursAgo(2.2), lat: 51.125829, lng: 13.580538, position_name: 'Kommissionierer (m/w/d)', company_name: 'WACHTEL ABT GmbH' },
+        { created_at: hoursAgo(3.4), lat: 48.709368, lng: 9.463204, position_name: 'Servicetechniker (m/w/d) Stuttgart', company_name: 'MUGLER SE' },
+        { created_at: hoursAgo(4.7), lat: 48.990044, lng: 8.247307, position_name: 'Berufskraftfahrer (m/w/d) Heidelberg', company_name: 'United Rentals GmbH' },
+        { created_at: hoursAgo(6.1), lat: 50.952401, lng: 6.913309, position_name: 'Elektroniker (m/w/d)', company_name: 'E-regio GmbH & Co. KG' },
+        { created_at: hoursAgo(8.7), lat: 54.307966, lng: 13.028482, position_name: 'Fieldservice-Techniker fuer Mobilfunk und Festnetz (m/w/d) Rostock', company_name: 'MUGLER SE' },
+        { created_at: hoursAgo(11.3), lat: 52.881639, lng: 11.486036, position_name: 'Kundendienst- / Servicetechniker im Aussendienst (m/w/d) - Deutschlandweit', company_name: 'Jumag Dampferzeuger GmbH' },
+        { created_at: hoursAgo(13.2), lat: 51.51305, lng: 7.423601, position_name: 'Servicetechniker (m/w/d)', company_name: 'MAE Maschinen- und Apparatebau Goetzen GmbH & Co.' },
+        { created_at: hoursAgo(16.4), lat: 50.800212, lng: 12.709087, position_name: 'Projektleiter Mobilfunk (m/w/d)', company_name: 'MUGLER SE' },
+        { created_at: hoursAgo(20.8), lat: 51.664241, lng: 9.373391, position_name: 'Vertriebssachbearbeiter (m/wd)', company_name: 'Ambrosia FM Consulting & Services GmbH' },
+        { created_at: hoursAgo(24.2), lat: 49.310918, lng: 12.17476, position_name: 'Servicetechniker (m/w/d) im Aussendienst', company_name: 'Maschinenbau Silberhorn GmbH' }
+      ];
+
+      window.addWwComponent = function register(componentDefinition) {
+        Vue.createApp({
+          render() {
+            return Vue.h('div', { style: { height: '100%' } }, [
+              Vue.h('h1', 'Bewerbungen nach Regionen'),
+              Vue.h('div', { class: 'preview-slot' }, [
+                Vue.h(componentDefinition.content, {
+                  content: {
+                    applications,
+                    liveWindowHours: 12,
+                    minRevealDelay: 1000,
+                    maxRevealDelay: 3000,
+                    replayRecentOnLoad: true,
+                    backgroundColor: '#ffffff',
+                    liveIndicatorText: 'Live',
+                    liveIndicatorDotColor: '#22c55e',
+                    liveIndicatorTextColor: '#050505',
+                    liveIndicatorBackgroundColor: '#ffffff',
+                    layoutGap: 32,
+                    mapMinHeight: 420,
+                    mapFillColor: '#e7e7e7',
+                    outlineColor: '#111111',
+                    regionLineColor: '#737373',
+                    hotspotColor: '#2563ff',
+                    glowOpacity: 0.3,
+                    clusterRadius: 34,
+                    minPointRadius: 5,
+                    maxPointRadius: 18,
+                    impactDuration: 1700,
+                    highlightColor: '#dbeafe',
+                    highlightDuration: 1200,
+                    sidePadding: 18,
+                    highlightRadius: 10,
+                    rowPaddingY: 14,
+                    positionFontSize: 21,
+                    companyFontSize: 19,
+                    timeFontSize: 17
+                  }
+                })
+              ])
+            ]);
+          }
+        }).mount('#app');
+
+        return true;
+      };
+    </script>
+    <script src="../dist/manager.js"></script>
+  </body>
+</html>
