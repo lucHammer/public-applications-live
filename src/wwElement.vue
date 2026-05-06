@@ -44,6 +44,7 @@
               class="applications-live-map-hotspot"
               :class="{ fresh: hotspot.isFresh }"
               :transform="`translate(${hotspot.x} ${hotspot.y})`"
+              :style="{ color: hotspot.color }"
               :tabindex="isEditing ? -1 : 0"
               :role="isEditing ? 'presentation' : 'button'"
               @click="emitHotspotClick(hotspot)"
@@ -324,6 +325,9 @@ export default {
         const haloRadius = minRadius * 2.05 + strength * (maxRadius * 1.42 - minRadius * 2.05);
         const coreRadius = 5.1 + strength * 2.15;
         const pulseDelay = `${(((cluster.x * 13 + cluster.y * 7) % 1800) / 1000).toFixed(2)}s`;
+        const baseColor = content.value.hotspotColor || '#2563ff';
+        const highlightColor = content.value.highlightColor || '#dbeafe';
+        const activeColor = cluster.isFresh ? highlightColor : baseColor;
 
         return {
           ...cluster,
@@ -332,8 +336,8 @@ export default {
           glowRadius: haloRadius * (1.28 + strength * 0.08),
           ambientPulseRadius: Math.max(coreRadius + 1.5, haloRadius * 0.56),
           impactRadius: Math.max(8, haloRadius * 0.66),
-          color: content.value.hotspotColor || '#2563ff',
-          strokeColor: content.value.hotspotColor || '#2563ff',
+          color: activeColor,
+          strokeColor: activeColor,
           pulseDelay,
           glowOpacity: clamp(glowOpacityValue.value * (0.9 + strength * 0.42), 0.17, 0.48),
           haloOpacity: clamp(0.18 + strength * 0.1, 0.18, 0.28),
@@ -577,7 +581,7 @@ export default {
 
 .applications-live-map-hotspot-core {
   stroke-width: 2;
-  filter: drop-shadow(0 0 7px rgba(37, 99, 255, 0.68));
+  filter: drop-shadow(0 0 7px currentColor);
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -593,7 +597,8 @@ export default {
 }
 
 .applications-live-map-hotspot-halo {
-  fill: rgba(37, 99, 255, 0.08);
+  fill: currentColor;
+  fill-opacity: 0.1;
   stroke-width: 2;
   pointer-events: none;
   transform-box: fill-box;
@@ -720,7 +725,9 @@ export default {
 .application-row.fresh::before {
   animation: application-highlight-pulse 900ms ease-out;
   background: var(--applications-feed-highlight);
-  box-shadow: 0 0 0 1px rgba(37, 99, 255, 0.06), 0 8px 24px rgba(37, 99, 255, 0.14);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--applications-feed-highlight) 18%, transparent),
+    0 8px 24px color-mix(in srgb, var(--applications-feed-highlight) 38%, transparent);
   opacity: 1;
   transform: scaleX(1);
 }
@@ -837,19 +844,23 @@ export default {
   0% {
     opacity: 0;
     transform: scaleX(0.96);
-    box-shadow: 0 0 0 0 rgba(37, 99, 255, 0);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--applications-feed-highlight) 0%, transparent);
   }
 
   24% {
     opacity: 1;
     transform: scaleX(1);
-    box-shadow: 0 0 0 1px rgba(37, 99, 255, 0.08), 0 10px 30px rgba(37, 99, 255, 0.18);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--applications-feed-highlight) 22%, transparent),
+      0 10px 30px color-mix(in srgb, var(--applications-feed-highlight) 48%, transparent);
   }
 
   100% {
     opacity: 1;
     transform: scaleX(1);
-    box-shadow: 0 0 0 1px rgba(37, 99, 255, 0.06), 0 8px 24px rgba(37, 99, 255, 0.14);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--applications-feed-highlight) 18%, transparent),
+      0 8px 24px color-mix(in srgb, var(--applications-feed-highlight) 38%, transparent);
   }
 }
 

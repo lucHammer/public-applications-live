@@ -219,7 +219,7 @@ export default {
       options: { min: 500, max: 5000, step: 100 }
     },
     highlightColor: {
-      label: { en: 'Feed highlight color' },
+      label: { en: 'Live highlight color' },
       type: 'Color',
       bindable: true,
       defaultValue: '#dbeafe'
