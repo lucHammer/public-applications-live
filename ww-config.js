@@ -167,7 +167,7 @@ export default {
       defaultValue: 0,
       options: { min: -2, max: 8, step: 0.1 }
     },
-    headerGap: {
+    headerBottomSpacing: {
       label: { en: 'Header bottom spacing' },
       type: 'Number',
       bindable: true,

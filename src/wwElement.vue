@@ -353,7 +353,10 @@ export default {
     const rootStyle = computed(() => ({
       '--applications-live-background': content.value.backgroundColor || '#ffffff',
       '--applications-live-gap': `${numberOrFallback(content.value.layoutGap, 28)}px`,
-      '--applications-live-header-gap': `${numberOrFallback(content.value.headerGap, 24)}px`,
+      '--applications-live-header-gap': `${numberOrFallback(
+        content.value.headerBottomSpacing ?? content.value.headerGap,
+        24
+      )}px`,
       '--applications-live-map-min-height': `${numberOrFallback(content.value.mapMinHeight, 420)}px`,
       '--applications-live-map-fill': content.value.mapFillColor || '#e7e7e7',
       '--applications-live-outline': content.value.outlineColor || '#111111',
@@ -521,7 +524,8 @@ export default {
   row-gap: var(--applications-live-header-gap);
   width: 100%;
   height: 100%;
-  min-height: calc(var(--applications-live-map-min-height) + var(--applications-live-header-gap) + 40px);
+  min-height: 0;
+  max-height: 100%;
   overflow: hidden;
   background: var(--applications-live-background);
   color: var(--applications-feed-text);
@@ -552,8 +556,8 @@ export default {
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: var(--applications-live-gap);
   width: 100%;
-  height: 100%;
-  min-height: var(--applications-live-map-min-height);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .applications-live-map,
@@ -566,7 +570,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: var(--applications-live-map-min-height);
+  height: 100%;
+  min-height: 0;
   overflow: visible;
 }
 
@@ -574,7 +579,7 @@ export default {
   display: block;
   width: min(100%, 640px);
   height: 100%;
-  min-height: 280px;
+  min-height: 0;
   max-height: 100%;
   overflow: visible;
 }
@@ -911,14 +916,15 @@ export default {
 @media (max-width: 560px) {
   .applications-live-layout {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 0.48fr) minmax(0, 0.52fr);
   }
 
   .applications-live-map {
-    min-height: min(var(--applications-live-map-min-height), 440px);
+    min-height: 0;
   }
 
   .applications-live-feed-panel {
-    min-height: 320px;
+    min-height: 0;
   }
 }
 
