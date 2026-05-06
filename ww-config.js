@@ -93,7 +93,7 @@ export default {
       label: { en: 'Live window hours' },
       type: 'Number',
       bindable: true,
-      defaultValue: 12,
+      defaultValue: 48,
       options: { min: 0, max: 168, step: 1 }
     },
     minRevealDelay: {
@@ -125,7 +125,7 @@ export default {
       label: { en: 'Title text' },
       type: 'Text',
       bindable: true,
-      defaultValue: 'Bewerbungen nach Regionen'
+      defaultValue: 'Bewerbungen der letzten 48 Stunden'
     },
     titleColor: {
       label: { en: 'Title color' },
@@ -143,14 +143,14 @@ export default {
       label: { en: 'Title font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 32,
+      defaultValue: 17,
       options: { min: 10, max: 72, step: 1 }
     },
     titleFontWeight: {
       label: { en: 'Title font weight' },
       type: 'Number',
       bindable: true,
-      defaultValue: 800,
+      defaultValue: 700,
       options: { min: 100, max: 1000, step: 100 }
     },
     titleLineHeight: {
@@ -326,28 +326,28 @@ export default {
       label: { en: 'Row vertical padding' },
       type: 'Number',
       bindable: true,
-      defaultValue: 14,
+      defaultValue: 11,
       options: { min: 4, max: 48, step: 1 }
     },
     positionFontSize: {
       label: { en: 'Position font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 21,
+      defaultValue: 16,
       options: { min: 12, max: 48, step: 1 }
     },
     companyFontSize: {
       label: { en: 'Company font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 19,
+      defaultValue: 15,
       options: { min: 12, max: 40, step: 1 }
     },
     timeFontSize: {
       label: { en: 'Time font size' },
       type: 'Number',
       bindable: true,
-      defaultValue: 17,
+      defaultValue: 12,
       options: { min: 10, max: 34, step: 1 }
     }
   }

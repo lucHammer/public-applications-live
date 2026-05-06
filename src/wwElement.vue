@@ -242,14 +242,14 @@ export default {
     const impactIds = ref(new Set());
     const timers = [];
 
-    const liveWindowHours = computed(() => Math.max(0, numberOrFallback(content.value.liveWindowHours, 12)));
+    const liveWindowHours = computed(() => Math.max(0, numberOrFallback(content.value.liveWindowHours, 48)));
     const minRevealDelay = computed(() => Math.max(0, numberOrFallback(content.value.minRevealDelay, 1000)));
     const maxRevealDelay = computed(() => Math.max(minRevealDelay.value, numberOrFallback(content.value.maxRevealDelay, 3000)));
     const replayRecentOnLoad = computed(() => content.value.replayRecentOnLoad !== false);
     const highlightDuration = computed(() => Math.max(300, numberOrFallback(content.value.highlightDuration, 1200)));
     const impactDuration = computed(() => Math.max(500, numberOrFallback(content.value.impactDuration, 1700)));
     const liveIndicatorText = computed(() => content.value.liveIndicatorText || 'Live');
-    const titleText = computed(() => content.value.titleText ?? 'Bewerbungen nach Regionen');
+    const titleText = computed(() => content.value.titleText ?? 'Bewerbungen der letzten 48 Stunden');
 
     const clusterRadius = computed(() => numberOrFallback(content.value.clusterRadius, 34));
     const minPointRadius = computed(() => numberOrFallback(content.value.minPointRadius, 5));
@@ -363,8 +363,8 @@ export default {
       '--applications-live-region-line': content.value.regionLineColor || '#6f6f6f',
       '--applications-live-hotspot': content.value.hotspotColor || '#2563ff',
       '--applications-live-title-color': content.value.titleColor || '#050505',
-      '--applications-live-title-size': `${numberOrFallback(content.value.titleFontSize, 32)}px`,
-      '--applications-live-title-weight': numberOrFallback(content.value.titleFontWeight, 800),
+      '--applications-live-title-size': `${numberOrFallback(content.value.titleFontSize, 17)}px`,
+      '--applications-live-title-weight': numberOrFallback(content.value.titleFontWeight, 700),
       '--applications-live-title-line-height': numberOrFallback(content.value.titleLineHeight, 1.08),
       '--applications-live-title-letter-spacing': `${numberOrFallback(content.value.titleLetterSpacing, 0)}px`,
       '--applications-live-title-font-family': content.value.titleFontFamily || 'inherit',
@@ -378,10 +378,10 @@ export default {
       '--applications-feed-divider': content.value.dividerColor || '#e9e9e9',
       '--applications-feed-side-padding': `${numberOrFallback(content.value.sidePadding, 18)}px`,
       '--applications-feed-highlight-radius': `${numberOrFallback(content.value.highlightRadius, 10)}px`,
-      '--applications-feed-row-padding-y': `${numberOrFallback(content.value.rowPaddingY, 14)}px`,
-      '--applications-feed-position-size': `${numberOrFallback(content.value.positionFontSize, 24)}px`,
-      '--applications-feed-company-size': `${numberOrFallback(content.value.companyFontSize, 22)}px`,
-      '--applications-feed-time-size': `${numberOrFallback(content.value.timeFontSize, 20)}px`
+      '--applications-feed-row-padding-y': `${numberOrFallback(content.value.rowPaddingY, 11)}px`,
+      '--applications-feed-position-size': `${numberOrFallback(content.value.positionFontSize, 16)}px`,
+      '--applications-feed-company-size': `${numberOrFallback(content.value.companyFontSize, 15)}px`,
+      '--applications-feed-time-size': `${numberOrFallback(content.value.timeFontSize, 12)}px`
     }));
 
     const isEditing = computed(() => {
@@ -556,7 +556,6 @@ export default {
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: var(--applications-live-gap);
   width: 100%;
-  height: 100%;
   min-height: 0;
   max-height: 100%;
   overflow: hidden;
