@@ -18,10 +18,25 @@
           aria-label="Deutschlandkarte mit Bewerbungs-Hotspots"
         >
           <defs>
-            <filter id="applications-live-hotspot-glow" x="-220%" y="-220%" width="540%" height="540%">
-              <feGaussianBlur stdDeviation="5" result="blur" />
+            <filter
+              id="applications-live-hotspot-glow"
+              x="-260%"
+              y="-260%"
+              width="620%"
+              height="620%"
+              color-interpolation-filters="sRGB"
+            >
+              <feTurbulence type="fractalNoise" baseFrequency="0.11" numOctaves="2" seed="7" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.9" result="organic" />
+              <feGaussianBlur in="organic" stdDeviation="4.8" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
+              </feMerge>
+            </filter>
+            <filter id="applications-live-hotspot-core-soft" x="-90%" y="-90%" width="280%" height="280%">
+              <feGaussianBlur stdDeviation="0.45" result="softCore" />
+              <feMerge>
+                <feMergeNode in="softCore" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
@@ -63,26 +78,26 @@
               <circle
                 class="applications-live-map-hotspot-glow"
                 :r="hotspot.glowRadius"
-                :fill="hotspot.color"
                 :opacity="hotspot.glowOpacity"
+              />
+              <circle
+                class="applications-live-map-hotspot-aura"
+                :r="hotspot.auraRadius"
+                :opacity="hotspot.auraOpacity"
               />
               <circle
                 class="applications-live-map-hotspot-ambient-pulse"
                 :r="hotspot.ambientPulseRadius"
-                :stroke="hotspot.color"
                 :style="{ animationDelay: hotspot.pulseDelay }"
               />
               <circle
                 class="applications-live-map-hotspot-halo"
                 :r="hotspot.haloRadius"
-                :stroke="hotspot.color"
                 :opacity="hotspot.haloOpacity"
               />
               <circle
                 class="applications-live-map-hotspot-core"
                 :r="hotspot.coreRadius"
-                :fill="hotspot.color"
-                :stroke="hotspot.strokeColor"
               />
               <circle
                 class="applications-live-map-hotspot-light"
@@ -92,13 +107,11 @@
                 v-if="hotspot.isFresh"
                 class="applications-live-map-hotspot-impact-ring hotspot-impact-ring-one"
                 :r="hotspot.impactRadius"
-                :stroke="hotspot.color"
               />
               <circle
                 v-if="hotspot.isFresh"
                 class="applications-live-map-hotspot-impact-ring hotspot-impact-ring-two"
                 :r="hotspot.impactRadius"
-                :stroke="hotspot.color"
               />
             </g>
           </g>
@@ -337,14 +350,16 @@ export default {
           ...cluster,
           coreRadius,
           haloRadius,
-          glowRadius: haloRadius * (1.28 + strength * 0.08),
+          auraRadius: haloRadius * (0.82 + strength * 0.05),
+          glowRadius: haloRadius * (1.42 + strength * 0.12),
           ambientPulseRadius: Math.max(coreRadius + 1.5, haloRadius * 0.56),
           impactRadius: Math.max(8, haloRadius * 0.66),
           color: activeColor,
           strokeColor: activeColor,
           pulseDelay,
-          glowOpacity: clamp(glowOpacityValue.value * (0.9 + strength * 0.42), 0.17, 0.48),
-          haloOpacity: clamp(0.18 + strength * 0.1, 0.18, 0.28),
+          glowOpacity: clamp(glowOpacityValue.value * (0.74 + strength * 0.3), 0.12, 0.38),
+          auraOpacity: clamp(0.14 + strength * 0.06, 0.14, 0.22),
+          haloOpacity: clamp(0.14 + strength * 0.08, 0.14, 0.22),
           tooltip: formatTooltip(cluster)
         };
       });
@@ -608,6 +623,7 @@ export default {
 .applications-live-map-hotspot {
   cursor: pointer;
   outline: none;
+  transition: color 1450ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &:focus-visible .applications-live-map-hotspot-core {
     stroke-width: 2.4;
@@ -615,18 +631,33 @@ export default {
 }
 
 .applications-live-map-hotspot-glow {
+  fill: currentColor;
   filter: url('#applications-live-hotspot-glow');
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.applications-live-map-hotspot-aura {
+  fill: currentColor;
+  filter: url('#applications-live-hotspot-glow');
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .applications-live-map-hotspot-core {
-  stroke-width: 2;
-  filter: drop-shadow(0 0 7px currentColor);
+  fill: currentColor;
+  stroke: rgba(255, 255, 255, 0.58);
+  stroke-width: 1.1;
+  filter: url('#applications-live-hotspot-core-soft') drop-shadow(0 0 7px currentColor);
   transform-box: fill-box;
   transform-origin: center;
 }
 
 .applications-live-map-hotspot-ambient-pulse {
   fill: none;
+  stroke: currentColor;
   stroke-width: 1.25;
   opacity: 0;
   pointer-events: none;
@@ -637,8 +668,8 @@ export default {
 
 .applications-live-map-hotspot-halo {
   fill: currentColor;
-  fill-opacity: 0.1;
-  stroke-width: 2;
+  stroke: none;
+  filter: url('#applications-live-hotspot-glow');
   pointer-events: none;
   transform-box: fill-box;
   transform-origin: center;
@@ -659,6 +690,7 @@ export default {
 
 .applications-live-map-hotspot-impact-ring {
   fill: none;
+  stroke: currentColor;
   stroke-width: 2.3;
   opacity: 0;
   pointer-events: none;
