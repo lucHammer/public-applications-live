@@ -75,14 +75,31 @@
               @keydown.space.prevent="emitHotspotClick(hotspot)"
             >
               <title>{{ hotspot.tooltip }}</title>
+              <defs>
+                <radialGradient :id="hotspot.gradientId" cx="50%" cy="50%" r="58%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.98" />
+                  <stop offset="18%" stop-color="#ffffff" stop-opacity="0.82" />
+                  <stop offset="44%" stop-color="currentColor" stop-opacity="0.9" />
+                  <stop offset="72%" stop-color="currentColor" stop-opacity="0.5" />
+                  <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient :id="hotspot.coreGradientId" cx="50%" cy="50%" r="62%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                  <stop offset="38%" stop-color="#ffffff" stop-opacity="0.86" />
+                  <stop offset="74%" stop-color="currentColor" stop-opacity="0.88" />
+                  <stop offset="100%" stop-color="currentColor" stop-opacity="0.5" />
+                </radialGradient>
+              </defs>
               <circle
                 class="applications-live-map-hotspot-glow"
                 :r="hotspot.glowRadius"
+                :fill="`url(#${hotspot.gradientId})`"
                 :opacity="hotspot.glowOpacity"
               />
               <circle
                 class="applications-live-map-hotspot-aura"
                 :r="hotspot.auraRadius"
+                :fill="`url(#${hotspot.gradientId})`"
                 :opacity="hotspot.auraOpacity"
               />
               <circle
@@ -93,11 +110,13 @@
               <circle
                 class="applications-live-map-hotspot-halo"
                 :r="hotspot.haloRadius"
+                :fill="`url(#${hotspot.gradientId})`"
                 :opacity="hotspot.haloOpacity"
               />
               <circle
                 class="applications-live-map-hotspot-core"
                 :r="hotspot.coreRadius"
+                :fill="`url(#${hotspot.coreGradientId})`"
               />
               <circle
                 class="applications-live-map-hotspot-light"
@@ -337,29 +356,31 @@ export default {
       const minRadius = Math.max(1, minPointRadius.value);
       const maxRadius = Math.max(minRadius, maxPointRadius.value);
 
-      return clusters.map((cluster) => {
+      return clusters.map((cluster, index) => {
         const strength = clamp(Math.log2(cluster.count) / Math.log2(8), 0, 1);
-        const haloRadius = minRadius * 2.05 + strength * (maxRadius * 1.42 - minRadius * 2.05);
-        const coreRadius = 5.1 + strength * 2.15;
+        const haloRadius = minRadius * 2.35 + strength * (maxRadius * 1.72 - minRadius * 2.35);
+        const coreRadius = 4.3 + strength * 2.65;
         const pulseDelay = `${(((cluster.x * 13 + cluster.y * 7) % 1800) / 1000).toFixed(2)}s`;
         const baseColor = content.value.hotspotColor || '#2563ff';
-        const highlightColor = content.value.highlightColor || '#dbeafe';
+        const highlightColor = content.value.mapHighlightColor || content.value.highlightColor || '#ff8a8a';
         const activeColor = cluster.isFresh ? highlightColor : baseColor;
 
         return {
           ...cluster,
+          gradientId: `applications-live-hotspot-gradient-${index}`,
+          coreGradientId: `applications-live-hotspot-core-gradient-${index}`,
           coreRadius,
           haloRadius,
-          auraRadius: haloRadius * (0.82 + strength * 0.05),
-          glowRadius: haloRadius * (1.42 + strength * 0.12),
+          auraRadius: haloRadius * (0.78 + strength * 0.06),
+          glowRadius: haloRadius * (1.58 + strength * 0.14),
           ambientPulseRadius: Math.max(coreRadius + 1.5, haloRadius * 0.56),
-          impactRadius: Math.max(8, haloRadius * 0.66),
+          impactRadius: Math.max(8, haloRadius * 0.7),
           color: activeColor,
           strokeColor: activeColor,
           pulseDelay,
-          glowOpacity: clamp(glowOpacityValue.value * (0.74 + strength * 0.3), 0.12, 0.38),
-          auraOpacity: clamp(0.14 + strength * 0.06, 0.14, 0.22),
-          haloOpacity: clamp(0.14 + strength * 0.08, 0.14, 0.22),
+          glowOpacity: clamp(glowOpacityValue.value * (0.88 + strength * 0.36), 0.16, 0.46),
+          auraOpacity: clamp(0.34 + strength * 0.08, 0.34, 0.42),
+          haloOpacity: clamp(0.72 + strength * 0.1, 0.72, 0.82),
           tooltip: formatTooltip(cluster)
         };
       });
@@ -623,7 +644,7 @@ export default {
 .applications-live-map-hotspot {
   cursor: pointer;
   outline: none;
-  transition: color 1450ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: color 1800ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &:focus-visible .applications-live-map-hotspot-core {
     stroke-width: 2.4;
@@ -631,7 +652,6 @@ export default {
 }
 
 .applications-live-map-hotspot-glow {
-  fill: currentColor;
   filter: url('#applications-live-hotspot-glow');
   pointer-events: none;
   transform-box: fill-box;
@@ -639,7 +659,6 @@ export default {
 }
 
 .applications-live-map-hotspot-aura {
-  fill: currentColor;
   filter: url('#applications-live-hotspot-glow');
   pointer-events: none;
   transform-box: fill-box;
@@ -647,9 +666,8 @@ export default {
 }
 
 .applications-live-map-hotspot-core {
-  fill: currentColor;
   stroke: rgba(255, 255, 255, 0.58);
-  stroke-width: 1.1;
+  stroke-width: 0.8;
   filter: url('#applications-live-hotspot-core-soft') drop-shadow(0 0 7px currentColor);
   transform-box: fill-box;
   transform-origin: center;
@@ -667,7 +685,6 @@ export default {
 }
 
 .applications-live-map-hotspot-halo {
-  fill: currentColor;
   stroke: none;
   filter: url('#applications-live-hotspot-glow');
   pointer-events: none;

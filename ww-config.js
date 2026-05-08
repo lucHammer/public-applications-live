@@ -272,10 +272,16 @@ export default {
       options: { min: 500, max: 5000, step: 100 }
     },
     highlightColor: {
-      label: { en: 'Live highlight color' },
+      label: { en: 'Feed highlight color' },
       type: 'Color',
       bindable: true,
       defaultValue: '#dbeafe'
+    },
+    mapHighlightColor: {
+      label: { en: 'Map highlight color' },
+      type: 'Color',
+      bindable: true,
+      defaultValue: '#ff8a8a'
     },
     highlightDuration: {
       label: { en: 'Feed highlight duration (ms)' },
