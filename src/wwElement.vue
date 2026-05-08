@@ -17,31 +17,6 @@
           role="img"
           aria-label="Deutschlandkarte mit Bewerbungs-Hotspots"
         >
-          <defs>
-            <filter
-              id="applications-live-hotspot-glow"
-              x="-260%"
-              y="-260%"
-              width="620%"
-              height="620%"
-              color-interpolation-filters="sRGB"
-            >
-              <feTurbulence type="fractalNoise" baseFrequency="0.11" numOctaves="2" seed="7" result="noise" />
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.9" result="organic" />
-              <feGaussianBlur in="organic" stdDeviation="4.8" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-              </feMerge>
-            </filter>
-            <filter id="applications-live-hotspot-core-soft" x="-90%" y="-90%" width="280%" height="280%">
-              <feGaussianBlur stdDeviation="0.45" result="softCore" />
-              <feMerge>
-                <feMergeNode in="softCore" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
           <g class="applications-live-map-outline" aria-hidden="true">
             <path
               v-for="location in germanyMap.locations"
@@ -76,18 +51,18 @@
             >
               <title>{{ hotspot.tooltip }}</title>
               <defs>
-                <radialGradient :id="hotspot.gradientId" cx="50%" cy="50%" r="58%">
-                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.88" />
-                  <stop offset="8%" stop-color="#ffffff" stop-opacity="0.52" />
-                  <stop offset="22%" stop-color="currentColor" stop-opacity="0.92" />
-                  <stop offset="58%" stop-color="currentColor" stop-opacity="0.48" />
+                <radialGradient :id="hotspot.gradientId" cx="50%" cy="50%" r="62%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.72" />
+                  <stop offset="10%" stop-color="currentColor" stop-opacity="0.62" />
+                  <stop offset="42%" stop-color="currentColor" stop-opacity="0.36" />
+                  <stop offset="72%" stop-color="currentColor" stop-opacity="0.16" />
                   <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
                 </radialGradient>
                 <radialGradient :id="hotspot.coreGradientId" cx="50%" cy="50%" r="62%">
                   <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
-                  <stop offset="30%" stop-color="#ffffff" stop-opacity="0.82" />
-                  <stop offset="58%" stop-color="currentColor" stop-opacity="0.76" />
-                  <stop offset="100%" stop-color="currentColor" stop-opacity="0.08" />
+                  <stop offset="18%" stop-color="#ffffff" stop-opacity="0.82" />
+                  <stop offset="44%" stop-color="currentColor" stop-opacity="0.82" />
+                  <stop offset="100%" stop-color="currentColor" stop-opacity="0.12" />
                 </radialGradient>
               </defs>
               <circle
@@ -101,11 +76,6 @@
                 :r="hotspot.auraRadius"
                 :fill="`url(#${hotspot.gradientId})`"
                 :opacity="hotspot.auraOpacity"
-              />
-              <circle
-                class="applications-live-map-hotspot-ambient-pulse"
-                :r="hotspot.ambientPulseRadius"
-                :style="{ animationDelay: hotspot.pulseDelay }"
               />
               <circle
                 class="applications-live-map-hotspot-halo"
@@ -360,7 +330,6 @@ export default {
         const strength = clamp(Math.log2(cluster.count) / Math.log2(8), 0, 1);
         const haloRadius = minRadius * 2.35 + strength * (maxRadius * 1.72 - minRadius * 2.35);
         const coreRadius = 4.3 + strength * 2.65;
-        const pulseDelay = `${(((cluster.x * 13 + cluster.y * 7) % 1800) / 1000).toFixed(2)}s`;
         const baseColor = content.value.hotspotColor || '#2563ff';
         const highlightColor = content.value.mapHighlightColor || content.value.highlightColor || '#ff8a8a';
         const activeColor = cluster.isFresh ? highlightColor : baseColor;
@@ -373,11 +342,9 @@ export default {
           haloRadius,
           auraRadius: haloRadius * (0.78 + strength * 0.06),
           glowRadius: haloRadius * (1.58 + strength * 0.14),
-          ambientPulseRadius: Math.max(coreRadius + 1.5, haloRadius * 0.56),
           impactRadius: Math.max(8, haloRadius * 0.7),
           color: activeColor,
           strokeColor: activeColor,
-          pulseDelay,
           glowOpacity: clamp(glowOpacityValue.value * (0.9 + strength * 0.34), 0.16, 0.44),
           auraOpacity: clamp(0.2 + strength * 0.07, 0.2, 0.28),
           haloOpacity: clamp(0.56 + strength * 0.1, 0.56, 0.66),
@@ -620,11 +587,6 @@ export default {
   overflow: visible;
 }
 
-.applications-live-map-outline,
-.applications-live-map-regions {
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.58));
-}
-
 .applications-live-map-outline-path {
   fill: none;
   stroke: var(--applications-live-outline);
@@ -652,14 +614,12 @@ export default {
 }
 
 .applications-live-map-hotspot-glow {
-  filter: url('#applications-live-hotspot-glow');
   pointer-events: none;
   transform-box: fill-box;
   transform-origin: center;
 }
 
 .applications-live-map-hotspot-aura {
-  filter: url('#applications-live-hotspot-glow');
   pointer-events: none;
   transform-box: fill-box;
   transform-origin: center;
@@ -667,25 +627,12 @@ export default {
 
 .applications-live-map-hotspot-core {
   stroke: none;
-  filter: url('#applications-live-hotspot-core-soft') drop-shadow(0 0 5px currentColor);
   transform-box: fill-box;
   transform-origin: center;
-}
-
-.applications-live-map-hotspot-ambient-pulse {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.25;
-  opacity: 0;
-  pointer-events: none;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: applications-live-ambient-pulse 3.1s ease-out infinite;
 }
 
 .applications-live-map-hotspot-halo {
   stroke: none;
-  filter: url('#applications-live-hotspot-glow');
   pointer-events: none;
   transform-box: fill-box;
   transform-origin: center;
@@ -752,7 +699,6 @@ export default {
   border-radius: 50%;
   background: var(--applications-live-dot);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--applications-live-dot) 16%, transparent);
-  animation: applications-live-status-pulse 1.8s ease-out infinite;
 }
 
 .applications-live-status-text {
@@ -884,21 +830,6 @@ export default {
   }
 }
 
-@keyframes applications-live-ambient-pulse {
-  0% {
-    opacity: 0.24;
-    transform: scale(0.76);
-    stroke-width: 1.35;
-  }
-
-  72%,
-  100% {
-    opacity: 0;
-    transform: scale(1.82);
-    stroke-width: 0.7;
-  }
-}
-
 @keyframes applications-live-halo-hit {
   0% {
     opacity: 0.7;
@@ -955,17 +886,6 @@ export default {
   }
 }
 
-@keyframes applications-live-status-pulse {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--applications-live-dot) 30%, transparent);
-  }
-
-  70%,
-  100% {
-    box-shadow: 0 0 0 7px color-mix(in srgb, var(--applications-live-dot) 0%, transparent);
-  }
-}
-
 @media (max-width: 560px) {
   .applications-live-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -994,7 +914,6 @@ export default {
 @media (prefers-reduced-motion: reduce) {
   .application-row,
   .application-row-move,
-  .applications-live-map-hotspot-ambient-pulse,
   .applications-live-map-hotspot.fresh .applications-live-map-hotspot-core,
   .applications-live-map-hotspot.fresh .applications-live-map-hotspot-halo,
   .applications-live-map-hotspot-impact-ring {
