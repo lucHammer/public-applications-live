@@ -77,17 +77,17 @@
               <title>{{ hotspot.tooltip }}</title>
               <defs>
                 <radialGradient :id="hotspot.gradientId" cx="50%" cy="50%" r="58%">
-                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.98" />
-                  <stop offset="18%" stop-color="#ffffff" stop-opacity="0.82" />
-                  <stop offset="44%" stop-color="currentColor" stop-opacity="0.9" />
-                  <stop offset="72%" stop-color="currentColor" stop-opacity="0.5" />
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.88" />
+                  <stop offset="8%" stop-color="#ffffff" stop-opacity="0.52" />
+                  <stop offset="22%" stop-color="currentColor" stop-opacity="0.92" />
+                  <stop offset="58%" stop-color="currentColor" stop-opacity="0.48" />
                   <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
                 </radialGradient>
                 <radialGradient :id="hotspot.coreGradientId" cx="50%" cy="50%" r="62%">
                   <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
-                  <stop offset="38%" stop-color="#ffffff" stop-opacity="0.86" />
-                  <stop offset="74%" stop-color="currentColor" stop-opacity="0.88" />
-                  <stop offset="100%" stop-color="currentColor" stop-opacity="0.5" />
+                  <stop offset="30%" stop-color="#ffffff" stop-opacity="0.82" />
+                  <stop offset="58%" stop-color="currentColor" stop-opacity="0.76" />
+                  <stop offset="100%" stop-color="currentColor" stop-opacity="0.08" />
                 </radialGradient>
               </defs>
               <circle
@@ -378,9 +378,9 @@ export default {
           color: activeColor,
           strokeColor: activeColor,
           pulseDelay,
-          glowOpacity: clamp(glowOpacityValue.value * (0.88 + strength * 0.36), 0.16, 0.46),
-          auraOpacity: clamp(0.34 + strength * 0.08, 0.34, 0.42),
-          haloOpacity: clamp(0.72 + strength * 0.1, 0.72, 0.82),
+          glowOpacity: clamp(glowOpacityValue.value * (0.9 + strength * 0.34), 0.16, 0.44),
+          auraOpacity: clamp(0.2 + strength * 0.07, 0.2, 0.28),
+          haloOpacity: clamp(0.56 + strength * 0.1, 0.56, 0.66),
           tooltip: formatTooltip(cluster)
         };
       });
@@ -666,9 +666,8 @@ export default {
 }
 
 .applications-live-map-hotspot-core {
-  stroke: rgba(255, 255, 255, 0.58);
-  stroke-width: 0.8;
-  filter: url('#applications-live-hotspot-core-soft') drop-shadow(0 0 7px currentColor);
+  stroke: none;
+  filter: url('#applications-live-hotspot-core-soft') drop-shadow(0 0 5px currentColor);
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -693,7 +692,7 @@ export default {
 }
 
 .applications-live-map-hotspot-light {
-  fill: rgba(255, 255, 255, 0.5);
+  fill: rgba(255, 255, 255, 0.72);
   pointer-events: none;
 }
 
